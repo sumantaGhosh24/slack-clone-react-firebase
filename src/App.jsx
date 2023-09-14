@@ -1,40 +1,71 @@
-import React from "react";
-import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import {useEffect} from "react";
+import {BrowserRouter, Navigate, Route, Routes} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {onAuthStateChanged} from "firebase/auth";
 
-import "./App.css";
-import Header from "./Header";
-import Sidebar from "./Sidebar";
-import Chat from "./Chat";
-import Login from "./Login";
-import {useStateValue} from "./StateProvider";
+import {auth} from "./firebase";
+import {setUser} from "./features/auth/authSlice";
+import {Home, Login, NotFound, Register} from "./pages";
 
 function App() {
-  const [{user}, dispatch] = useStateValue();
+  const {user} = useSelector((state) => state.auth);
 
-  console.log(user);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        dispatch(setUser(user.uid));
+      } else {
+        dispatch(setUser(null));
+      }
+    });
+
+    return () => unsubscribe();
+  }, [dispatch]);
+
+  // eslint-disable-next-line react/prop-types
+  const RequireAuth = ({children}) => {
+    return user ? children : <Navigate to="/login" />;
+  };
+
+  // eslint-disable-next-line react/prop-types
+  const GuestAuth = ({children}) => {
+    return user ? <Navigate to="/" /> : children;
+  };
+
   return (
-    <div className="app">
-      <Router>
-        {!user ? (
-          <Login />
-        ) : (
-          <>
-            <Header />
-            <div className="app__body">
-              <Sidebar />
-              <Switch>
-                <Route path="/room/:roomId">
-                  <Chat />
-                </Route>
-                <Route path="/">
-                  <h2>Welcome to Slack Clone</h2>
-                </Route>
-              </Switch>
-            </div>
-          </>
-        )}
-      </Router>
-    </div>
+    <>
+      <BrowserRouter>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <RequireAuth>
+                <Home />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/login"
+            element={
+              <GuestAuth>
+                <Login />
+              </GuestAuth>
+            }
+          />
+          <Route
+            path="/register"
+            element={
+              <GuestAuth>
+                <Register />
+              </GuestAuth>
+            }
+          />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 

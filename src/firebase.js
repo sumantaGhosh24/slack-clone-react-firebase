@@ -1,6 +1,7 @@
 import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
-import "firebase/compat/auth";
+import {connectAuthEmulator, getAuth} from "firebase/auth";
+import {connectFirestoreEmulator, getFirestore} from "firebase/firestore";
+import {getStorage, connectStorageEmulator} from "firebase/storage";
 
 import {
   API_KEY,
@@ -11,20 +12,23 @@ import {
   STORAGE_BUCKET,
 } from "./config";
 
-const firebaseConfig = {
+const app = firebase.initializeApp({
   apiKey: API_KEY,
   authDomain: AUTH_DOMAIN,
   projectId: PROJECT_ID,
   storageBucket: STORAGE_BUCKET,
   messagingSenderId: MESSAGING_SENDER_ID,
   appId: APP_ID,
-};
+});
 
-const firebaseApp = firebase.initializeApp(firebaseConfig);
+export const db = getFirestore(app);
 
-const db = firebaseApp.firestore();
-const auth = firebase.auth();
-const provider = new firebase.auth.GoogleAuthProvider();
+export const auth = getAuth();
 
-export {auth, provider};
-export default db;
+export const storage = getStorage(app);
+
+if (window.location.hostname == "localhost") {
+  connectAuthEmulator(auth, "http://localhost:9099");
+  connectFirestoreEmulator(db, "localhost", 8080);
+  connectStorageEmulator(storage, "localhost", 9199);
+}
