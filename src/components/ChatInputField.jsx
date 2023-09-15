@@ -34,6 +34,7 @@ const ChatInputField = ({channelName, channelId}) => {
         message: userInput,
         timestamp: serverTimestamp(),
         user: `${userData.firstName} ${userData.lastName}`,
+        userId: user,
         userImage: userData.profileImage,
       });
     }
@@ -48,7 +49,7 @@ const ChatInputField = ({channelName, channelId}) => {
           onChange={(e) => setUserInput(e.target.value)}
           type="text"
           placeholder={`Send a message in #${channelName?.toLowerCase()}`}
-          className="fixed bottom-8 w-[60%] border border-solid border-gray-800 p-5 rounded"
+          className="fixed bottom-8 w-[65%] border border-solid border-gray-800 py-2 px-2 rounded focus:outline-none"
         />
         <button type="submit" onClick={handleSend} className="hidden">
           Send

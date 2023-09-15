@@ -5,7 +5,7 @@ import {onAuthStateChanged} from "firebase/auth";
 
 import {auth} from "./firebase";
 import {setUser} from "./features/auth/authSlice";
-import {Home, Login, NotFound, Register} from "./pages";
+import {Home, Login, NotFound, Register, Chat} from "./pages";
 
 function App() {
   const {user} = useSelector((state) => state.auth);
@@ -38,6 +38,14 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
+          <Route
+            path="/room/:roomId"
+            element={
+              <RequireAuth>
+                <Chat />
+              </RequireAuth>
+            }
+          />
           <Route
             path="/"
             element={

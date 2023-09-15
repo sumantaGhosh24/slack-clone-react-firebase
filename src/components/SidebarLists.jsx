@@ -20,7 +20,7 @@ const SidebarLists = ({Icon, title, id, addNewChannel}) => {
     if (id) {
       navigate(`/room/${id}`);
     } else {
-      navigate(title);
+      navigate(title.toLowerCase());
     }
   };
 
@@ -30,13 +30,13 @@ const SidebarLists = ({Icon, title, id, addNewChannel}) => {
       onClick={addNewChannel ? addChannel : selectChannel}
     >
       {Icon && (
-        <Icon className="pt-1 pr-2.5 pb-2.5 pl-2.5 !text-3xl items-center" />
+        <Icon className="pt-1 pr-2.5 pb-2.5 pl-2.5 text-4xl items-center" />
       )}
       {Icon ? (
-        <h3 className="text-sm font-medium">{title}</h3>
+        <h3 className="text-base font-medium">{title}</h3>
       ) : (
-        <h3 className="py-2.5 px-0">
-          <span className="p-3">#</span>
+        <h3 className="py-2 px-0 text-base">
+          <span className="p-3 text-2xl">#</span>
           {title}
         </h3>
       )}

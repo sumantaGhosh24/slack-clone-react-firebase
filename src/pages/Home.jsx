@@ -1,6 +1,4 @@
-import {Route} from "react-router-dom";
-
-import {Chat, Header, Sidebar} from "../components";
+import {Header, Sidebar} from "../components";
 
 const Home = () => {
   return (
@@ -8,12 +6,7 @@ const Home = () => {
       <Header />
       <div className="flex h-screen">
         <Sidebar />
-        <Route path="/room/:roomId">
-          <Chat />
-        </Route>
-        <Route path="/">
-          <h1>Welcome</h1>
-        </Route>
+        <h1 className="mt-5 ml-5 font-bold text-2xl">Welcome to slack clone</h1>
       </div>
     </>
   );
