@@ -34,7 +34,7 @@ const Login = () => {
       {isLoading && <Spinner />}
       <div className="min-h-screen flex justify-center items-center">
         <div className="p-5 rounded-lg shadow-lg w-[90%] mx-auto my-20">
-          <h2 className="text-2xl font-semibold mb-4">Register</h2>
+          <h2 className="text-2xl font-semibold mb-4">Login</h2>
           {isMessage && <Alert message={message} />}
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
