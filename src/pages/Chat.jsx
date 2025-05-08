@@ -4,8 +4,7 @@ import {useParams} from "react-router-dom";
 import {MdOutlineStarBorder, MdInfoOutline} from "react-icons/md";
 
 import {db} from "../firebase";
-import {ChatInputField, Message} from "../components";
-import {Sidebar, Header} from "../components";
+import {Sidebar, Header, ChatInputField, Message} from "../components";
 
 const Chat = () => {
   const [roomName, setRoomName] = useState(null);
